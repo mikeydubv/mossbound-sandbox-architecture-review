@@ -1,1 +1,9 @@
-{"type":"module"}
+{
+  "name": "mossbound-sandbox-architecture-review",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/sandbox/foundation-smoke.mjs && node dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/sandbox/smoke-test.mjs && node dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/sandbox/command-smoke.mjs && node dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/tests/board-state-smoke.mjs",
+    "check": "node --check dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/scene-v20.js"
+  }
+}

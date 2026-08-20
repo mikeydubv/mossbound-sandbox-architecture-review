@@ -1,10 +1,35 @@
-# Mossbound Sandbox Architecture Review
+# Mossbound Sandbox — Full Architecture Review Snapshot
 
-This is a sanitized review snapshot of the Mossbound Salvage Yard browser sandbox builder.
+This is a sanitized, runnable snapshot of the Mossbound Salvage Yard browser sandbox builder and its relevant development history.
 
 ## Product goal
 
-A bold vertical slice proving that an AI agent can build a reliable, attractive creative 3D tool: users should be able to start blank, place and manipulate assets, edit terrain, build connected paths/streams, switch environments, and undo/redo without regressions.
+A bold vertical slice proving that an AI agent can build a reliable, attractive creative 3D tool. A new user should be able to start from a blank world, place and manipulate assets, edit terrain, create connected paths/streams, switch environments, and undo/redo without regressions.
+
+## Run locally
+
+The app expects the repository root to be served as a static web root because the scene uses `/dev/...` and `/skills/...` absolute module paths.
+
+```bash
+python3 -m http.server 8080
+# open http://localhost:8080/
+```
+
+The root entry point loads the current v20 scene through the example runtime.
+
+## Test
+
+```bash
+npm test
+npm run check
+```
+
+## Included
+
+- `dev/example-gallery/examples/threejs-procedural-materials/hybrid-soil-moss-surface/` — all scene generations, current v20 scene, board facade, sandbox foundation, tests, and metadata
+- `dev/example-gallery/runtime/` — local example runtime used by the builder
+- `skills/threejs-procedural-materials/` — imported material/model modules and required textures
+- root entry point and the deployed-style route entry point
 
 ## Intended architecture
 
@@ -19,21 +44,8 @@ World State
 
 World state is authoritative. Three.js objects are disposable projections. Logical rotations are quarter-turn integers (`0..3`); render rotations are radians.
 
-## Included files
+## Known review target
 
-- `scene-v20.js` — current monolithic scene/editor integration
-- `sandbox-board-state.js` — compatibility facade
-- `sandbox/` — grid, footprint, world state, paths, presets, validation, registry, command boundary, and smoke tests
+The current scene still contains legacy editor handlers and a separate local history stack. The purpose of this repository is to decide whether to migrate those handlers or replace the editor shell with a clean vertical-slice implementation.
 
-## Local checks
-
-```bash
-node sandbox/foundation-smoke.mjs
-node sandbox/smoke-test.mjs
-node sandbox/command-smoke.mjs
-node --check scene-v20.js
-```
-
-## Review focus
-
-The scene still contains legacy editor handlers and a separate local history stack. Review whether the correct move is to migrate those handlers or replace the editor shell with a clean vertical-slice implementation.
+No credentials, environment files, node_modules, or unrelated workspace projects are included.

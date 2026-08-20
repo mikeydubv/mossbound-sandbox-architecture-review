@@ -1,0 +1,10 @@
+import { createWorldState } from './world-state.js';
+const w=createWorldState({presetId:'blank'});
+const a=w.addPlacement({kind:'house',anchor:{x:1,z:1},footprint:[2,2]});
+if(!a.valid)throw Error('add');
+if(w.addPlacement({kind:'rock',anchor:{x:2,z:2}}).valid)throw Error('overlap');
+if(!w.movePlacement(a.object.id,{x:3,z:3}).valid)throw Error('move');
+if(w.movePlacement(a.object.id,{x:11,z:11}).valid)throw Error('bounds rollback');
+w.paintTerrain({x:3,z:3},{elevation:1});
+if(!w.addPath({kind:'stream',cells:[{x:0,z:0},{x:1,z:0},{x:1,z:1}]}).valid)throw Error('path');
+w.assertInvariants();const snap=w.toJSON();const r=createWorldState();r.load(snap).assertInvariants();w.undo();w.assertInvariants();console.log('world foundation smoke passed');

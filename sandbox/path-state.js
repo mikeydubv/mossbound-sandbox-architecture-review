@@ -1,5 +1,0 @@
-import { cellKey, inBounds } from './grid.js';
-export const PATH_N = 1, PATH_E = 2, PATH_S = 4, PATH_W = 8;
-const dirs = [[0,-1,PATH_N,PATH_S],[1,0,PATH_E,PATH_W],[0,1,PATH_S,PATH_N],[-1,0,PATH_W,PATH_E]];
-export function connectionMask(cells, cell) { const set = new Set(cells.map(cellKey)); let mask = 0; for (const [dx,dz,bit] of dirs) if (set.has(cellKey({x:cell.x+dx,z:cell.z+dz}))) mask |= bit; return mask; }
-export function validatePath(path, grid) { const cells = path?.cells || []; if (!cells.length) return { valid:false, reason:'empty' }; const seen = new Set(); for (const cell of cells) { if (!inBounds(grid, cell)) return {valid:false, reason:'bounds', cell}; const key=cellKey(cell); if (seen.has(key)) return {valid:false, reason:'duplicate', cell}; seen.add(key); } for (const cell of cells.slice(1)) { const adjacent = dirs.some(([dx,dz]) => seen.has(cellKey({x:cell.x+dx,z:cell.z+dz}))); if (!adjacent) return {valid:false, reason:'disconnected', cell}; } return {valid:true, masks:new Map(cells.map(cell => [cellKey(cell), connectionMask(cells,cell)]))}; }

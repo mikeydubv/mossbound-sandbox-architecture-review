@@ -1,0 +1,10 @@
+{
+  "title": "Mossbound Salvage Yard",
+  "description": "A complete stylized salvage-yard scene built on the hybrid PBR soil and moss material with procedural terrain, scrap props, vegetation, puddle water, fireflies, and a pulsing repair beacon.",
+  "backend": "WebGL2 / MeshStandardMaterial shader injection",
+  "techniques": ["specular anti-aliasing", "procedural soil and moss", "model moss accumulation", "instanced vegetation", "analytic puddle water", "atmospheric lighting", "interactive repair beacon"],
+  "defaultViewport": { "width": 1440, "height": 900 },
+  "defaultDpr": 1,
+  "debugModes": [{ "value": "final", "label": "Final" }, { "value": "height", "label": "Ground Height" }, { "value": "moisture", "label": "Moisture" }, { "value": "cracks", "label": "Cracks" }, { "value": "moss", "label": "Ground Moss Mask" }, { "value": "ground-only", "label": "Ground Only" }],
+  "controls": ["orbit", "pan", "pause", "dpr", "debugMode", "capture"]
+}

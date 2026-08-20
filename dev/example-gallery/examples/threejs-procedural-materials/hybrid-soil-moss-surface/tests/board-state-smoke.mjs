@@ -1,0 +1,15 @@
+import { createBoardState, normalizeQuarterTurn } from '../../../../../../../../tmp/mossbound-board-state-test.mjs';
+const board = createBoardState({ width: 4, height: 4, tileSize: 2 });
+const placed = board.add({ kind: 'workshop', anchor: { x: 0, z: 0 }, footprint: [2, 2] });
+if (!placed.valid || board.occupied.size !== 4) throw new Error('initial placement failed');
+if (board.add({ kind: 'rock', anchor: { x: 1, z: 1 } }).valid) throw new Error('overlap accepted');
+if (!board.move(placed.object.id, { x: 2, z: 2 }, false).valid) throw new Error('valid move rejected');
+const failed = board.move(placed.object.id, { x: 4, z: 4 }, false);
+if (failed.valid || board.objects.get(placed.object.id).anchor.x !== 2) throw new Error('failed move did not roll back');
+if (!board.rotate(placed.object.id, 1, false).valid) throw new Error('rotation failed');
+if (board.objects.get(placed.object.id).rotation !== 1) throw new Error('rotation is not logical quarter-turn');
+board.setTerrain({ x: 2, z: 2 }, { elevation: 1 }, false);
+board.assertInvariants();
+const restored = createBoardState(); restored.load(board.toJSON()); restored.assertInvariants();
+if (normalizeQuarterTurn(Math.PI / 2) !== 1) throw new Error('radian normalization failed');
+console.log('board-state smoke passed');
